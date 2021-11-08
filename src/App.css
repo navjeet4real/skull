@@ -1,38 +1,222 @@
-.App {
-  text-align: center;
+*{
+  margin: 0;
+  padding: 0;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  font-family: Arial;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header{
+  padding: 15px 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-around;
+  position:sticky;
+  background-color:white;
+  z-index: 100;
+  top: 0;
+  box-shadow: 0px 5px 8px -9px rgba(
+    0, 0, 0, 75);
+}
+.headerLeft > img{
+  height: 60px;
+  border-radius: 2px;
+}
+.headerMiddle{
+  font-size: 40px;
+  
+}
+
+/* .linkBtn{
+  background-color: white;
+  color: black;
+  border: 0;
+  font-size: 40px;
+  margin-top: 10px;
+}
+.linkBtn:hover{
+  cursor: grab;
+  
+} */
+.linkBtn {
+  border-radius: 4px;
+  border: none;
+  color: black;
+  text-align: center;
+  font-size: 28px;
+  padding: 10px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.linkBtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.linkBtn span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0px;
+  transition: 0.5s;
+}
+
+.linkBtn:hover span {
+  padding-right: 25px;
+}
+
+.linkBtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
+.form{
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  position:relative;
+
+}
+.meme{
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  height: 480px;
+  position: relative;
+  
+}
+.meme > img{
+  
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
+  border: 2px solid black;
+}
+.meme .topText{
+  position:absolute;
+  z-index: 100;
+  top: 10px;
+  color: beige;
+  text-shadow: 2px 2px black;  
+}
+.meme .bottomText{
+  position:absolute;
+  z-index: 10;
+  bottom: 20px;
+  color: beige;
+  text-shadow: 2px 2px black;
+ 
+}
+input,
+textarea {
+    padding: 10px 12px 10px 12px;
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+    margin: 10px;
+    width: 40%;
+    box-sizing: border-box;
+    color: #2C3E50;
+    font-size: 14px;
+    letter-spacing: 1px
+}
+input:focus,
+textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #2C3E50;
+    outline-width: 0
+}
+.btn {
+  background-color: #EFEFEF;
+  width: 150px;
+  height: 38px;
+  color: black;
+  margin-top: 10px;
+  border-radius: 2px;
+  font-size: 20px;
+}
+
+.btn:hover {
+  background-color: black;
+  cursor: pointer;
   color: white;
+  font-size: medium;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media screen and (max-width: 576px){
+  .headerLeft > img{
+    height: 30px;
   }
-  to {
-    transform: rotate(360deg);
+  .meme{
+    height: 175px;
+  }
+  .topText{
+    font-size: 12px;
+  }
+  .bottomText{
+    font-size: 12px;
+  }
+  .linkBtn{
+    width: 52px;
+    font-size: 6px;
+  }
+  .linkBtn:hover span {
+    padding-right: 5px;
+  }
+  .headerMiddle{
+    font-size: 15px;
+  }
+  .btn{
+    font-size: 12px;
+    height: 22px;
+  }
+  .form{
+    height: 30px;
   }
 }
+@media (max-width: 768px) and (min-width: 577px){
+  .headerLeft > img{
+    height: 70px;
+  }
+  .meme{
+    height: 350px;
+  }
+  .topText{
+    font-size: 22px;
+  }
+  .bottomText{
+    font-size: 22px;
+  }
+  .linkBtn{
+    width: 112px;
+    font-size: 18px;
+  }
+  .linkBtn:hover span {
+    padding-right: 17px;
+  }
+  .headerMiddle{
+    font-size: 30px;
+  }
+  .btn{
+    font-size: 18px;
+    height: 32px;
+  }
+  .form{
+    height: 52px;
+  }
+}
+@media (min-width: 992px){
+  
+}
+/* @media(min-width: 1200px){
+  .meme{
+    width: 600px;
+    height: 470px;
+  }
+} */
