@@ -1,5 +1,6 @@
 import React from "react"
 import "./App.css"
+import { Link } from "react-router-dom";
 
 
 function Header() {
@@ -13,8 +14,14 @@ function Header() {
             </div>
             <div className="headerRight">
                
-                <button className="linkBtn"><span>About Us</span></button>
-               
+                {/* <button className="linkBtn"><span>About Us</span></button> */}
+                <Link
+                    type="button"
+                    className="linkBtn"
+                    to="/aboutUs"
+                  >
+                    <span>About Us</span>
+                  </Link>
             </div>
         </div>
 
