@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import noUs from "./images/no-us.png"
+import noUs from "../images/no-us.png"
 
 const AboutUs = () => {
     return (
