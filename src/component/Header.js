@@ -17,7 +17,7 @@ function Header() {
                     type="button"
                     to="/aboutUs"
                 >
-                    <button className="linkBtn">
+                    <button className="button-54">
                         <span>About Us</span>
                     </button>
                 </Link>
