@@ -1,4 +1,5 @@
 import React, { Fragment, useState,useEffect } from "react";
+import { getDataAPI, postDataAPI } from "../utils/API";
 const  initialState = { topText : "", bottomText: "" } 
 
 const MemeGeneratorMain = () => {
@@ -7,25 +8,29 @@ const MemeGeneratorMain = () => {
   const [randomImg, setRandomImg] = useState("https://i.imgflip.com/46e43q.png");
 
   const {topText, bottomText} = text
-    useEffect(() => {
-     getAllMeme()
-    }, [])
+    // useEffect(() => {
+    // })
     function getAllMeme () {
         fetch("https://api.imgflip.com/get_memes")
         .then(response => response.json())
         .then(response => {
-            setAllMeme(response.data)
+            setAllMeme(response.data.memes)
         })
     }
+    getAllMeme()
+
   const handleChange = (e) => {
     const {name, value} = e.target
     setText((text) => ({ ...text, [name]: value }))
   }
-  const handleSubmit = (e) => {
+  const changeMeme = (e) => {
     e.preventDefault();
     const randNum = Math.floor(Math.random() * allMeme.length)
     const randMemeImg = allMeme[randNum].url
     setRandomImg(randMemeImg)
+  }
+  const handleSubmit = () => {
+    postDataAPI("meme/post-meme",text).then((res) => console.log(res.data))
   }
   return (
     <Fragment>
@@ -45,8 +50,11 @@ const MemeGeneratorMain = () => {
             value={bottomText}
             onChange={handleChange}
           />
-          <button type="submit" className="button-54 col sm={6}">Change Meme</button>
+          <button type="submit" className="button-54 col sm={6}">Post Meme</button>
+
         </form>
+        <button onClick={changeMeme} className="button-54 col sm={6}">Change Meme</button>
+
         <div className="meme">
           <img src={randomImg} alt="" />
           <h2 className="topText">{topText}</h2>

@@ -8,7 +8,7 @@ const memeSchema = mongoose.Schema({
     bottomText:{
         type: String
     },
-    template:{
+    url:{
         type: String
     }
 });
