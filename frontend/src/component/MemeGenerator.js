@@ -19,9 +19,7 @@ const MemeGeneratorMain = () => {
     }
   const handleChange = (e) => {
     const {name, value} = e.target
-    setText({
-        [name] : value
-    })
+    setText((text) => ({ ...text, [name]: value }))
   }
   const handleSubmit = (e) => {
     e.preventDefault();
