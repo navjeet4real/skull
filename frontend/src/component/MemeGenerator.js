@@ -24,7 +24,6 @@ const MemeGeneratorMain = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const randNum = Math.floor(Math.random() * allMeme.length)
-    console.log(randNum)
     const randMemeImg = allMeme[randNum].url
     setRandomImg(randMemeImg)
   }
