@@ -1,0 +1,178 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  body{
+    font-family: Arial;
+  }
+  .header{
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-around;
+    position:sticky;
+    background-color:white;
+    z-index: 100;
+    top: 0;
+    box-shadow: 0px 5px 8px -9px rgba(
+      0, 0, 0, 75);
+  }
+  .headerLeft > img{
+    height: 60px;
+    border-radius: 2px;
+  }
+  .headerMiddle{
+    font-size: 40px;
+    
+  }
+  
+  .form{
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    position:relative;
+  
+  }
+  .meme{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 480px;
+    position: relative;
+    
+  }
+  .meme > img{
+    
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    overflow: hidden;
+    border: 2px solid black;
+  }
+  .meme .topText{
+    position:absolute;
+    z-index: 99;
+    top: 10px;
+    color: beige;
+    text-shadow: 2px 2px black;  
+  }
+  .meme .bottomText{
+    position:absolute;
+    z-index: 99;
+    bottom: 20px;
+    color: beige;
+    text-shadow: 2px 2px black;
+   
+  }
+  input,
+  textarea {
+      padding: 10px 12px 10px 12px;
+      border: 1px solid lightgrey;
+      border-radius: 2px;
+      margin: 10px;
+      width: 40%;
+      box-sizing: border-box;
+      color: #2C3E50;
+      font-size: 14px;
+      letter-spacing: 1px
+  }
+  input:focus,
+  textarea:focus {
+      -moz-box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      border: 1px solid #2C3E50;
+      outline-width: 0
+  }
+  
+  @media screen and (max-width: 576px){
+    .headerLeft > img{
+      height: 30px;
+    }
+    .meme{
+      height: 175px;
+    }
+    .topText{
+      font-size: 12px;
+    }
+    .bottomText{
+      font-size: 12px;
+    }
+    
+    .headerMiddle{
+      font-size: 15px;
+    }
+    .btn{
+      font-size: 12px;
+      height: 22px;
+    }
+    .form{
+      height: 30px;
+    }
+  }
+  @media (max-width: 768px) and (min-width: 577px){
+    .headerLeft > img{
+      height: 70px;
+    }
+    .meme{
+      height: 350px;
+    }
+    .topText{
+      font-size: 22px;
+    }
+    .bottomText{
+      font-size: 22px;
+    }
+    
+    .headerMiddle{
+      font-size: 30px;
+    }
+    .btn{
+      font-size: 18px;
+      height: 32px;
+    }
+    .form{
+      height: 52px;
+    }
+  }
+  @media (min-width: 992px){
+    
+  }
+  /* @media(min-width: 1200px){
+    .meme{
+      width: 600px;
+      height: 470px;
+    }
+  } */
+  
+  
+  
+  
+  /* CSS */
+  .button-54 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #000;
+    cursor: pointer;
+    border: 3px solid;
+    padding: 0.25em 0.5em;
+    box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-54:active {
+    box-shadow: 0px 0px 0px 0px;
+    top: 5px;
+    left: 5px;
+  }
+  
+  @media (min-width: 768px) {
+    .button-54 {
+      padding: 0.25em 0.75em;
+    }
+  }
