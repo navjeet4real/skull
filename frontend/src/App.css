@@ -5,6 +5,23 @@
   body{
     font-family: Arial;
   }
+  .login-banner{
+    background-image: url("../src/images/banner.png");
+    height:max-content;
+    height: 100vh;
+    background-position: center;
+    overflow: hidden;
+    background-size: cover;
+    position: relative;
+  }
+  .login-banner .login-button{
+    position:absolute;
+    z-index: 99;
+    top: 47%;
+    left: 47%;
+    color: beige;
+    text-shadow: 2px 2px black;  
+  }
   .header{
     padding: 15px 20px;
     display: flex;

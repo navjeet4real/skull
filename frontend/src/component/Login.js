@@ -30,6 +30,7 @@ const Login = () => {
     google.accounts.id.renderButton(document.getElementById("signIN"), {
       theme: "outline",
       size: "large",
+      type: "icon"
     });
 
     google.accounts.id.prompt();
@@ -41,18 +42,20 @@ const Login = () => {
       navigate("/home");
     }
     if (res.data.status === 2) {
-        navigate("/home");
-      }
+      navigate("/home");
+    }
   }
   return (
     <>
-      <div id="signIN"></div>
-      {user && (
+      <div className="login-banner">
+        <div id="signIN" className="login-button"></div>
+      </div>
+      {/* {user && (
         <div>
           <img alt="profile-picture" src={user.picture} />
           <h3>{user.name}</h3>
         </div>
-      )}
+      )} */}
     </>
   );
 };
