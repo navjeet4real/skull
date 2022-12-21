@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
 import { getDataAPI } from "../utils/API";
+import Header from "./Header";
 
 const MemeDashboard = () => {
   const [memes, setMemes] = useState([]);
@@ -14,11 +15,12 @@ const MemeDashboard = () => {
   console.log(memes.length, "memes");
   return (
     <Fragment>
+      <Header />
       <div className="mt-5">
         {memes && memes.length > 0
           ? memes.map((data, index) => (
               <div className="meme">
-                <img src={data.url} alt="" />
+                <img className="meme-img" src={data.url} alt="" />
                 <h2 className="topText">{data.topText}</h2>
                 <h2 className="bottomText">{data.bottomText}</h2>
               </div>

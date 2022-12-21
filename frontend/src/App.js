@@ -4,6 +4,7 @@ import "./App.css";
 import AboutUs from "./component/AboutUs";
 import { useEffect } from "react";
 import Login from "./component/Login";
+import MemeDashboard from "./component/MemeDashboard";
 
 function App() {
   
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/" element={<Login />} />
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/aboutUs" element={<AboutUs />}></Route>
+          <Route exact path="/dashboard" element={<MemeDashboard />}></Route>
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import Header from "./Header";
-import MemeDashboard from "./MemeDashboard";
 import MemeGenerator from "./MemeGenerator";
 
 const Home = () => {
@@ -8,7 +7,6 @@ const Home = () => {
     <Fragment>
       <Header />
       <MemeGenerator />
-      <MemeDashboard />
     </Fragment>
   );
 };

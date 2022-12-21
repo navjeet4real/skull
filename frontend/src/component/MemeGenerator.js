@@ -66,7 +66,7 @@ const MemeGenerator = () => {
       </button>
 
       <div className="meme">
-        <img src={randomImg} alt="" />
+        <img className="meme-img" src={randomImg} alt="meme"  />
         <h2 className="topText">{topText}</h2>
         <h2 className="bottomText">{bottomText}</h2>
       </div>
