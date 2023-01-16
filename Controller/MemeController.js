@@ -14,13 +14,13 @@ const memeController = {
       console.log(memes,"memes")
       return res.json(memes)
     } catch (error) {
-      return res.status(500).json({ msg: error.message, trace: error.stack });
+      return res.status(500).json({ msg: error.message, trace: error.stack });  
     }
   },
   postMeme: async (req, res) => {
     try {
       
-      const url = req.body.randomImg;
+      const url = req.body.randomImg;   
       const { topText, bottomText } = req.body.text;
       if (!url) {
         return res.json({ status: 0, errors });

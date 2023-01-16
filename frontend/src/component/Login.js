@@ -13,8 +13,12 @@ const Login = () => {
     document.getElementById("signIN").hidden = true;
     createUser();
     // navigate("/home");
-  }
 
+  }
+  // function onSignIn(googleUser) {
+  //   var id_token = googleUser.getAuthResponse().id_token;
+  //  console.log(id_token,"tokeeeeennnnnnn")
+  // }
   //   if(user ){
   //     createUser(user);
 
@@ -36,8 +40,9 @@ const Login = () => {
     google.accounts.id.prompt();
   }, []);
 
-  async function createUser(data) {
-    const res = await postDataAPI("user/create-user", data);
+  async function createUser() {
+    const res = await postDataAPI("user/create-user", user);
+    // onSignIn(user)
     if (res.data.status === 1) {
       navigate("/home");
     }
