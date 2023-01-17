@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { faker } from "@faker-js/faker";
-import { Gear, SignOut, User } from "phosphor-react";
+import { Article, SignOut, User } from "phosphor-react";
 
 const Profile_Menu = [
   {
@@ -19,7 +19,7 @@ const Profile_Menu = [
   },
   {
     title: "About Us",
-    icon: <Gear />,
+    icon: <Article />,
   },
   {
     title: "Logout",
@@ -48,7 +48,7 @@ const Header = () => {
           width: "100%",
           backgroundColor: "#F8FAFF",
           boxShadow: "0px 0px 0px rgba(0, 0, 0, 0.25)",
-          height: '100px'
+          height: "100px",
         }}
       >
         <Stack
@@ -122,7 +122,7 @@ const Header = () => {
               }}
             >
               <Stack spacing={1} px={1}>
-                {Profile_Menu.map((item,index) => (
+                {Profile_Menu.map((item, index) => (
                   <MenuItem onClick={handleClick} key={index}>
                     <Stack
                       sx={{ width: 100 }}
