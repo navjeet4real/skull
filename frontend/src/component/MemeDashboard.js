@@ -1,11 +1,19 @@
-import { Typography, Stack, Grid } from "@mui/material";
-import React, { Fragment, useEffect, useState } from "react";
+import { Typography, Stack, Grid, IconButton } from "@mui/material";
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { getDataAPI } from "../utils/API";
 import Header from "./Header";
-
+import * as htmlToImage from "html-to-image";
+import { toPng } from "html-to-image";
+import { Download } from "phosphor-react";
 const MemeDashboard = () => {
   const [memes, setMemes] = useState([]);
-
+  const ref = useRef();
   useEffect(() => {
     getMeme();
   }, []);
@@ -13,21 +21,27 @@ const MemeDashboard = () => {
   function getMeme() {
     getDataAPI("meme/get-all-meme").then((res) => setMemes(res.data));
   }
-  console.log(memes.length, "memes");
+  // console.log(memes.length, "memes");
+  const download = (index) => { 
+    if (ref.current === null) {
+      return;
+    }
+
+    console.log(ref.current, "reffffffff", index);
+    toPng(ref.current, { cacheBust: true })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-image-name.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <Fragment>
       <Header />
-      {/* <div className="mt-5">
-        {memes && memes.length > 0
-          ? memes.map((data, index) => (
-              <div className="meme">
-                <img className="meme-img" src={data.url} alt="" />
-                <h2 className="topText">{data.topText}</h2>
-                <h2 className="bottomText">{data.bottomText}</h2>
-              </div>
-            ))
-          : []}
-      </div> */}
       <Stack height={"100%"} width="auto" maxHeight={"100vh"}>
         <Stack
           sx={{
@@ -41,17 +55,27 @@ const MemeDashboard = () => {
           <Grid container spacing={2}>
             {memes && memes.length > 0
               ? memes.map((item, index) => (
-                  <Grid item xs={4} className="meme-dashboard">
-                    <img
-                      src={item.url}
-                      alt={item.url}
-                      style={{ maxHeight: 210, borderRadius: "10px" }}
-                      className="meme-img" 
-                    />
-                    <Typography className="topText">{item.topText}</Typography>
-                    <Typography className="bottomText">{item.bottomText}</Typography>
-                    
-                  </Grid>
+                  <>
+                    <Grid item xs={4} >
+                      <Stack ref={ref} id={index} className="meme-dashboard">
+                        <img
+                          src={item.url}
+                          alt={item.url}
+                          style={{ maxHeight: 210, borderRadius: "10px" }}
+                          className="meme-img"
+                        />
+                        <Typography className="topText">
+                          {item.topText}
+                        </Typography>
+                        <Typography className="bottomText">
+                          {item.bottomText}
+                        </Typography>
+                      </Stack>
+                      <IconButton onClick={download(index)}>
+                        <Download />
+                      </IconButton>
+                    </Grid>
+                  </>
                 ))
               : []}
           </Grid>
