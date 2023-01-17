@@ -121,8 +121,8 @@ const Header = () => {
               }}
             >
               <Stack spacing={1} px={1}>
-                {Profile_Menu.map((item) => (
-                  <MenuItem onClick={handleClick}>
+                {Profile_Menu.map((item,index) => (
+                  <MenuItem onClick={handleClick} key={index}>
                     <Stack
                       sx={{ width: 100 }}
                       direction="row"
@@ -130,7 +130,12 @@ const Header = () => {
                       justifyContent="space-between"
                     >
                       <span>
-                        <Link component={RouterLink} to="/aboutUs" color={"inherit"} underline='none' >
+                        <Link
+                          component={RouterLink}
+                          to="/aboutUs"
+                          color={"inherit"}
+                          underline="none"
+                        >
                           {item.title}
                         </Link>
                       </span>

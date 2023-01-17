@@ -8,9 +8,9 @@ import React, {
 } from "react";
 import { getDataAPI } from "../utils/API";
 import Header from "./Header";
-import * as htmlToImage from "html-to-image";
-import { toPng } from "html-to-image";
 import { Download } from "phosphor-react";
+import * as htmlToImage from 'html-to-image';
+import download from "downloadjs";
 const MemeDashboard = () => {
   const [memes, setMemes] = useState([]);
   const ref = useRef();
@@ -21,24 +21,13 @@ const MemeDashboard = () => {
   function getMeme() {
     getDataAPI("meme/get-all-meme").then((res) => setMemes(res.data));
   }
-  // console.log(memes.length, "memes");
-  const download = (index) => { 
-    if (ref.current === null) {
-      return;
-    }
-
-    console.log(ref.current, "reffffffff", index);
-    toPng(ref.current, { cacheBust: true })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "my-image-name.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
+  const downloadImg = useCallback((index) => {
+      var node = document.getElementById(`meme-${index}`);
+      htmlToImage.toPng(node)
+      .then(function (dataUrl) {
+        download(dataUrl, `meme-${index}.png`);
       });
-  }
+  },[])
   return (
     <Fragment>
       <Header />
@@ -56,8 +45,8 @@ const MemeDashboard = () => {
             {memes && memes.length > 0
               ? memes.map((item, index) => (
                   <>
-                    <Grid item xs={4} >
-                      <Stack ref={ref} id={index} className="meme-dashboard">
+                    <Grid item xs={4}  key={index} >
+                      <Stack ref={ref} id={`meme-${index}`} className="meme-dashboard">
                         <img
                           src={item.url}
                           alt={item.url}
@@ -71,7 +60,9 @@ const MemeDashboard = () => {
                           {item.bottomText}
                         </Typography>
                       </Stack>
-                      <IconButton onClick={download(index)}>
+                      <IconButton onClick={() => {
+                        downloadImg(index)
+                      }}>
                         <Download />
                       </IconButton>
                     </Grid>
