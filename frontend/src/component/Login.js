@@ -1,34 +1,48 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postDataAPI } from "../utils/API";
 import { IconButton } from "@mui/material";
 import { GoogleLogo } from "phosphor-react";
-const initialState = {
-  email: "",
-  password: "",
-  err: "",
-  success: "",
-};
-const Login = () => {
-  const [user, setUser] = useState(initialState);
-  let navigate = useNavigate();
+import useGoogleOAuth from "../hooks/useGoogleOAuth";
+import { dispatchLogin } from "../redux/action/socialAction";
+import { useDispatch, useSelector } from "react-redux";
 
-  async function createUser() {
-    const res = await postDataAPI("user/create-user", user);
-    // onSignIn(user)
-    if (res.data.status === 1) {
-      navigate("/home");
+
+
+const Login = () => {
+  const [user, setUser] = useState();
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
+  console.log(auth, "auth")
+  if (auth && auth.data) {
+    var response = auth.data;
+    console.log(response,"response")
+    if (response.errors === undefined) {
+      response.errors = 0;
     }
-    if (res.data.status === 2) {
-      navigate("/home");
+    if (response.status === 1) {
+      navigate("/dashboard")
     }
   }
+  const googleLogin = useGoogleOAuth({
+    onSuccess: async (res) => {
+      setUser({ ...user, error: "", success: res.data.msg });
+      localStorage.setItem("firstLogin", true);
+      dispatch(dispatchLogin(res.data));
+      navigate("/dashboard");
+    },
+    onError: () => {
+      console.log("google: Login Failed");
+    },
+  });
+
+  
   return (
     <>
       <div className="login-banner">
         <div id="signIN" className="login-button">
-          <IconButton sx={{ backgroundColor: "white" }}>
-            <GoogleLogo size={32} color="#DF3E30" />
+          <IconButton  onClick={googleLogin} sx={{ backgroundColor: "white", boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;' }}>
+            <GoogleLogo size={32} color="#DF3E30"  />
           </IconButton>
         </div>
       </div>

@@ -18,6 +18,11 @@
     "google-auth-library": "^8.1.1",
     "googleapis": "^107.0.0",
     "mongoose": "^6.8.1",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "bcrypt": "^5.0.1",
+    "aws-sdk": "^2.1164.0",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
+    "jsonwebtoken": "^8.5.1"
   }
 }

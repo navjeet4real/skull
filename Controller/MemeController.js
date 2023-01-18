@@ -11,7 +11,6 @@ const memeController = {
             msg: "nothing existed"
         })
       }
-      console.log(memes,"memes")
       return res.json(memes)
     } catch (error) {
       return res.status(500).json({ msg: error.message, trace: error.stack });  

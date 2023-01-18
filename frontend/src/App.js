@@ -4,6 +4,7 @@ import "./App.css";
 import AboutUs from "./component/AboutUs";
 import Login from "./component/Login";
 import MemeDashboard from "./component/MemeDashboard";
+import DataProvider from "./redux/store";
 
 function App() {
   return (
