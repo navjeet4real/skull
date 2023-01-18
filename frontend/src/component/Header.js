@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Stack,
   Link,
@@ -10,39 +10,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Article, SignOut, User } from "phosphor-react";
-import { getDataAPI } from "../utils/API";
-const Profile_Menu = [
-  {
-    title: "Profile",
-    icon: <User />,
-  },
-  {
-    title: "About Us",
-    icon: <Article />,
-  },
-  {
-    title: "Logout",
-    icon: <SignOut />,
-  },
-];
+import { getDataAPI, postDataAPI } from "../utils/API";
+
 const Header = () => {
+ 
   const [user, setUser] = useState("");
+  let navigate = useNavigate();
 
-  const logout = () => {
-    // var auth2 = gapi.auth2.getAuthInstance();
-    // auth2.signOut().then(function () {
-    //   console.log('User signed out.');
-    // });
-  };
-
-  const [anchorEl, setAnchorEl] = useState();
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   useEffect(() => {
     getUser();
   },[])
@@ -59,6 +33,50 @@ const Header = () => {
       }
     });
   }
+  const logout = (user) => {
+    console.log("jjjjjjjjjjjjjjj",user)
+    postDataAPI("user/logout",{email:user.email}).then(function (res) {
+      if (res.data.status === 1) {
+        window.location.href = "/";
+      }
+    });
+  };
+
+  const Profile_Menu = [
+    {
+      key: 0,
+      title: "Profile",
+      icon: <User />,
+      onclick: () => {},
+    },
+    {
+      key: 1,
+      title: "About Us",
+      icon: <Article />,
+      onclick: () => {
+        navigate("/aboutUs")
+      },
+
+    },
+    {
+      key: 2,
+      title: "Logout",
+      icon: <SignOut />,
+      onclick: () => {
+        logout(user)
+      },
+
+    },
+  ];
+  const [anchorEl, setAnchorEl] = useState();
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
   return (
     <>
       <Box
@@ -140,8 +158,12 @@ const Header = () => {
               }}
             >
               <Stack spacing={1} px={1}>
-                {Profile_Menu.map((item, index) => (
-                  <MenuItem onClick={handleClick} key={index}>
+                {Profile_Menu.map(({ key, icon, title, onclick }) => (
+                  <MenuItem 
+                   key={key}
+                   onClick={onclick}
+                   
+                   >
                     <Stack
                       sx={{ width: 100 }}
                       direction="row"
@@ -149,16 +171,16 @@ const Header = () => {
                       justifyContent="space-between"
                     >
                       <span>
-                        <Link
+                        {/* <Link
                           component={RouterLink}
                           to="/aboutUs"
                           color={"inherit"}
                           underline="none"
-                        >
-                          {item.title}
-                        </Link>
+                        > */}
+                          {title}
+                        {/* </Link> */}
                       </span>
-                      {item.icon}
+                      {icon}
                     </Stack>
                   </MenuItem>
                 ))}

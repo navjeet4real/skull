@@ -6,5 +6,6 @@ const auth = require("../Middleware/auth");
 router.post('/google_login', userController.googleLogin);
 router.get("/user/refresh_token", userController.refreshToken);
 router.get("/get_user/:id", userController.getUser);
+router.post("/user/logout", userController.logout);
 
 module.exports = router;
