@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Stack,
@@ -9,9 +9,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { faker } from "@faker-js/faker";
 import { Article, SignOut, User } from "phosphor-react";
-
+import { getDataAPI } from "../utils/API";
 const Profile_Menu = [
   {
     title: "Profile",
@@ -27,12 +26,15 @@ const Profile_Menu = [
   },
 ];
 const Header = () => {
+  const [user, setUser] = useState("");
+
   const logout = () => {
     // var auth2 = gapi.auth2.getAuthInstance();
     // auth2.signOut().then(function () {
     //   console.log('User signed out.');
     // });
   };
+
   const [anchorEl, setAnchorEl] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -41,6 +43,22 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    getUser();
+  },[])
+  async function getUser() {
+    getDataAPI("user/refresh_token").then(function (token) {
+      if (token.data.access_token) {
+        console.log(token.data,"token and data")
+        getDataAPI(
+          `get_user/${token.data.user._id}`,
+          token.data.access_token
+        ).then((res) => {
+          setUser(res.data);
+        });
+      }
+    });
+  }
   return (
     <>
       <Box
@@ -92,8 +110,8 @@ const Header = () => {
           </Stack>
           <Stack justifyContent={"row"} direction="row" spacing={2}>
             <Avatar
-              src={faker.image.avatar()}
-              alt={faker.name.fullName()}
+              src={user.picture}
+              alt={user.firstName}
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
@@ -101,7 +119,7 @@ const Header = () => {
               onClick={handleClick}
             />
             <Stack spacing={0.2} onClick={handleClick}>
-              <Typography>{faker.name.fullName()}</Typography>
+              <Typography>{user.firstName + " " + user.lastName}</Typography>
               <Typography variant="caption">Mr. Solo Dolo III</Typography>
             </Stack>
             <Menu

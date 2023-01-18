@@ -1,32 +1,41 @@
 require("dotenv").config();
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-app.use('/api', require("./Routes/MemeRoutes"));
-app.use('/api', require("./Routes/UserRoutes"));
-
-// conection with DB
-mongoose.set('strictQuery', true);
-mongoose.connect(
-    process.env.CONNECTION_URL,
-    {
-        useNewUrlParser: true,
-        // useCreateIndex: true,
-        useUnifiedTopology: true,
-    },
-    (err) => {
-        if(err) throw err;
-        console.log("Boo yeah! Connected to MongoDB")
-    },
+app.use(cookieParser());
+app.use(
+  cookieSession({
+    name: "google-auth-session",
+    keys: ["key1", "key2"],
+  })
 );
 
-const port = process.env.port
+app.use("/api", require("./Routes/MemeRoutes"));
+app.use("/api", require("./Routes/UserRoutes"));
+
+// conection with DB
+mongoose.set("strictQuery", true);
+mongoose.connect(
+  process.env.CONNECTION_URL,
+  {
+    useNewUrlParser: true,
+    // useCreateIndex: true,
+    useUnifiedTopology: true,
+  },
+  (err) => {
+    if (err) throw err;
+    console.log("Boo yeah! Connected to MongoDB");
+  }
+);
+
+const port = process.env.port;
 
 app.listen(port, () => {
-    console.log(`Listening port localhost : ${port}`);
+  console.log(`Listening port localhost : ${port}`);
 });

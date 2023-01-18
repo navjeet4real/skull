@@ -9,6 +9,20 @@ const getAuthTokens = (id) => {
 };
 
 const userController = {
+
+   // get user details by id
+   getUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if (!user) {
+        return res.status(400).json("user does not exist");
+      }
+      res.json(user);
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 //   createUser: async (req, res) => {
 //     try {
 //       console.log("APi runing");
@@ -56,7 +70,6 @@ const userController = {
         given_name,
         picture,
       } = req.body;
-
       const password = email + process.env.GOOGLE_CLIENT_SECRET;
       const passwordHash = await bcrypt.hash(password, 10);
       if (!email_verified) {
@@ -93,10 +106,10 @@ const userController = {
 
       const userDoc = await newUser.save();
 
-      const { accesstoken, refresh_token } = getAuthTokens(userDoc._id);
+      const { accesstoken: accessToken, refresh_token } = getAuthTokens(userDoc._id);
       const responseBody = {
         token: refresh_token,
-        accessToken: accesstoken,
+        accessToken: access_token,
         status: 1,
       };
       res.cookie("refreshtoken", refresh_token, {

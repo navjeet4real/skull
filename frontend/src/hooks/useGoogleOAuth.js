@@ -6,7 +6,6 @@ import axios from "axios";
 const getUserInfo = async (access_token) => {
     const headers = { Authorization: `Bearer ${access_token}` };
     const url = 'https://www.googleapis.com/oauth2/v3/userinfo';
-
     const res = await axios.get(url, {
         headers,
     })
