@@ -20,12 +20,15 @@ const memeController = {
     try {
       
       const url = req.body.randomImg;   
+      const userId = req.body.id;   
       const { topText, bottomText } = req.body.text;
+    
       if (!url) {
         return res.json({ status: 0, errors });
       }
       if (topText || bottomText) {
         var newMeme = new Meme({
+          userId: userId,
           topText: topText,
           bottomText: bottomText,
           url: url,

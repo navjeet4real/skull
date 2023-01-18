@@ -1,6 +1,6 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { postDataAPI } from "../utils/API";
+import { postDataAPI, getDataAPI } from "../utils/API";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,8 @@ const CssTextField = styled(TextField)({
 const MemeGenerator = () => {
   const [allMeme, setAllMeme] = useState([]);
   const [text, setText] = useState(initialState);
+  const [user, setUser] = useState("");
+
   let navigate = useNavigate()
   const [randomImg, setRandomImg] = useState(
     "https://i.imgflip.com/46e43q.png"
@@ -30,7 +32,21 @@ const MemeGenerator = () => {
   const { topText, bottomText } = text;
   useEffect(() => {
     getAllMeme();
+    getUser();
   }, []);
+  async function getUser() {
+    getDataAPI("user/refresh_token").then(function (token) {
+      if (token.data.access_token) {
+        console.log(token.data,"token and data")
+        getDataAPI(
+          `get_user/${token.data.user._id}`,
+          token.data.access_token
+        ).then((res) => {
+          setUser(res.data);
+        });
+      }
+    });
+  }
   function getAllMeme() {
     fetch("https://api.imgflip.com/get_memes")
       .then((response) => response.json())
@@ -49,7 +65,7 @@ const MemeGenerator = () => {
     setRandomImg(randMemeImg);
   };
   const handleSubmit = async () => {
-    const res = await postDataAPI("meme/post-meme", { text, randomImg });
+    const res = await postDataAPI("meme/post-meme", { text, randomImg, id: user._id });
     if(res.data.status === 1){
       navigate('/dashboard')
     }

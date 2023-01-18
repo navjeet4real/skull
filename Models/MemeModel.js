@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 const memeSchema = mongoose.Schema({
-
+    userId:{
+        type: String
+    },
     topText:{
         type: String
     },
