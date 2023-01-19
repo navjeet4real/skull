@@ -11,28 +11,34 @@ import {
 } from "@mui/material";
 import { Article, SignOut, User } from "phosphor-react";
 import { getDataAPI, postDataAPI } from "../utils/API";
-
+import { useDispatch, useSelector } from "react-redux";
+import { dispatchGetUser } from "../redux/action/socialAction";
 const Header = () => {
  
   const [user, setUser] = useState("");
   let navigate = useNavigate();
+  const { auth } = useSelector((state) => state);
+  // const dispatch = useDispatch();
+  // dispatch(dispatchGetUser())
 
+  console.log(auth, "user")
   useEffect(() => {
-    getUser();
+    setUser(auth.user)
+    // getUser();
   },[])
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        console.log(token.data,"token and data")
-        getDataAPI(
-          `get_user/${token.data.user._id}`,
-          token.data.access_token
-        ).then((res) => {
-          setUser(res.data);
-        });
-      }
-    });
-  }
+  // async function getUser() {
+  //   getDataAPI("user/refresh_token").then(function (token) {
+  //     if (token.data.access_token) {
+  //       console.log(token.data,"token and data")
+  //       getDataAPI(
+  //         `get_user/${token.data.user._id}`,
+  //         token.data.access_token
+  //       ).then((res) => {
+  //         setUser(res.data);
+  //       });
+  //     }
+  //   });
+  // }
   const logout = (user) => {
     console.log("jjjjjjjjjjjjjjj",user)
     postDataAPI("user/logout",{email:user.email}).then(function (res) {
@@ -128,7 +134,7 @@ const Header = () => {
           </Stack>
           <Stack justifyContent={"row"} direction="row" spacing={2}>
             <Avatar
-              src={user.picture}
+              src={user && user.picture ? user.picture : ""}
               alt={user.firstName}
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}

@@ -1,7 +1,7 @@
 import ACTIONS from '../action/GlobalTypes'
 
 const initialState = {
-    user: [],
+    user: {},
     isLogged: false,
 }
 
@@ -9,8 +9,8 @@ const authReducer = (state = initialState, action) => {
     switch(action.type){
         case ACTIONS.LOGIN:
             return {
-                ...state,
-                isLogged: true
+                isLogged: true,
+                user : action.payload.data.user
             }
         case ACTIONS.GET_USER:
             return {

@@ -16,6 +16,27 @@ const memeController = {
       return res.status(500).json({ msg: error.message, trace: error.stack });  
     }
   },
+  // get meme by user ID
+  getMemeById: async (req, res) => {
+    try {
+
+      const id = req.params
+     console.log(id,"idddddddd")
+      const memes = await Meme.find({userId : id});
+
+      if(!memes){
+        return res.json({
+            status: 0,
+            msg: "nothing existed"
+        })
+      }
+      return res.json(memes)
+    } catch (error) {
+      return res.status(500).json({ msg: error.message, trace: error.stack });  
+    }
+  },
+
+  // post meme using user ID
   postMeme: async (req, res) => {
     try {
       
