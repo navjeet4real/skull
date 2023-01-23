@@ -84,6 +84,7 @@ const MemeGenerator = () => {
           justifyContent="space-evenly"
           alignItems={"center"}
           sx={{ width: "100%", height: "100%", mt: 5, mb: 5 }}
+          
         >
           <Box
             component="form"
