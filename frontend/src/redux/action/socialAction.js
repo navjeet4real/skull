@@ -20,18 +20,20 @@ export const fetchUser = async (token) => {
 
 export const dispatchGetUser = async () => {
   const res = await getDataAPI("user/refresh_token");
-  return {
-    type: GlobalTypes.GET_USER,
-    payload: {
-      data: res.data,
-    },
-  };
+  // return {
+  //   type: GlobalTypes.GET_USER,
+  //   payload: {
+  //     data: res.data,
+  //   },
+  // };
 };
-export const dispatchGetUser1 = async (dispatch) => {
+export const dispatchGetUser1 = () => async (dispatch) => {
   try {
 
-    await getDataAPI("user/refresh_token").then((res) => {
-      dispatch({
+  // const res = await getDataAPI("user/refresh_token");
+  const res =  await getDataAPI("user/refresh_token").then((res) => {
+    console.log(res,"response") 
+    dispatch({
         type: GlobalTypes.GET_USER,
         payload: {
           data: res.data.user,
@@ -39,18 +41,20 @@ export const dispatchGetUser1 = async (dispatch) => {
       });
     });
   } catch (error) {
-    return {
-      type: GlobalTypes.GET_USER,
-      payload: {
-        error: error.response,
-      },
-    };
+    dispatch(
+      {
+        type: GlobalTypes.GET_USER,
+        payload: {
+          error: error.response,
+        },
+      }
+    );
   }
 
-  //   return {
-  //     type: GlobalTypes.GET_USER,
-  //     payload: {
-  //       user: res.data,
-  //     },
-  //   };
+    // return {
+    //   type: GlobalTypes.GET_USER,
+    //   payload: {
+    //     user: res.data,
+    //   },
+    // };
 };

@@ -12,22 +12,22 @@ import {
 import { Article, SignOut, User } from "phosphor-react";
 import { getDataAPI, postDataAPI } from "../utils/API";
 import { useDispatch, useSelector } from "react-redux";
-import { dispatchGetUser } from "../redux/action/socialAction";
+import { dispatchGetUser1 } from "../redux/action/socialAction";
 const Header = () => {
  
   const [user, setUser] = useState("");
   let navigate = useNavigate();
-  const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
-  dispatch(dispatchGetUser())
+  dispatch(dispatchGetUser1())
 
-  console.log(auth, "auth")
+  // console.log(auth, "auth")
 
-  useEffect(() => {
-    setUser(auth.user)
-    // getUser();
-  },[])
-  console.log(user, "user")
+  // useEffect(() => {
+  //   setUser(auth.user)
+  //   // getUser();
+  // },[])
+  console.log( "user")
 
   // async function getUser() {
   //   getDataAPI("user/refresh_token").then(function (token) {
