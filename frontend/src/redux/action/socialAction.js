@@ -18,13 +18,23 @@ export const fetchUser = async (token) => {
   return res;
 };
 
-export const dispatchGetUser = async (dispatch) => {
+export const dispatchGetUser = async () => {
+  const res = await getDataAPI("user/refresh_token");
+  return {
+    type: GlobalTypes.GET_USER,
+    payload: {
+      data: res.data,
+    },
+  };
+};
+export const dispatchGetUser1 = async (dispatch) => {
   try {
+
     await getDataAPI("user/refresh_token").then((res) => {
       dispatch({
         type: GlobalTypes.GET_USER,
         payload: {
-          user: res.data.user,
+          data: res.data.user,
         },
       });
     });

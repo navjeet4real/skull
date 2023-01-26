@@ -28,7 +28,7 @@ const Login = () => {
     onSuccess: async (res) => {
       setUser({ ...user, error: "", success: res.data.msg });
       localStorage.setItem("firstLogin", true);
-      console.log(res.data, "ddddddddddddd",user)
+      // console.log(res.data, "ddddddddddddd",user)
       dispatch(dispatchLogin(res.data));
       navigate("/dashboard");
     },

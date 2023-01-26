@@ -14,8 +14,8 @@ const authReducer = (state = initialState, action) => {
             }
         case ACTIONS.GET_USER:
             return {
-                ...state,
-                user: action.payload.user,
+                
+                user: action.payload.data.user,
             }
         default:
             return state

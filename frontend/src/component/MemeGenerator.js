@@ -37,7 +37,7 @@ const MemeGenerator = () => {
   async function getUser() {
     getDataAPI("user/refresh_token").then(function (token) {
       if (token.data.access_token) {
-        console.log(token.data,"token and data")
+        console.log(token.data, "token and data")
         getDataAPI(
           `get_user/${token.data.user._id}`,
           token.data.access_token
@@ -66,7 +66,7 @@ const MemeGenerator = () => {
   };
   const handleSubmit = async () => {
     const res = await postDataAPI("meme/post-meme", { text, randomImg, id: user._id });
-    if(res.data.status === 1){
+    if (res.data.status === 1) {
       navigate('/dashboard')
     }
   };
@@ -84,7 +84,7 @@ const MemeGenerator = () => {
           justifyContent="space-evenly"
           alignItems={"center"}
           sx={{ width: "100%", height: "100%", mt: 5, mb: 5 }}
-          
+
         >
           <Box
             component="form"

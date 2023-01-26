@@ -18,14 +18,17 @@ const Header = () => {
   const [user, setUser] = useState("");
   let navigate = useNavigate();
   const { auth } = useSelector((state) => state);
-  // const dispatch = useDispatch();
-  // dispatch(dispatchGetUser())
+  const dispatch = useDispatch();
+  dispatch(dispatchGetUser())
 
-  console.log(auth, "user")
+  console.log(auth, "auth")
+
   useEffect(() => {
     setUser(auth.user)
     // getUser();
   },[])
+  console.log(user, "user")
+
   // async function getUser() {
   //   getDataAPI("user/refresh_token").then(function (token) {
   //     if (token.data.access_token) {
