@@ -36,9 +36,9 @@ const Header = () => {
 
   const logout = (user) => {
     postDataAPI("user/logout", { email: user.email }).then(function (res) {
-      if (res.data.status === 1) {
-        window.location.href = "/";
-      }
+      // if (res.data.status === 1) {
+      //   window.location.href = "/auth/login";
+      // }
     });
   };
 

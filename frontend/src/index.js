@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+// import {store} from "./redux/store";
+// import { Provider as ReduxProvider } from "react-redux";
 import DataProvider from "./redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -10,9 +12,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <DataProvider>
+    {/* <ReduxProvider store={store}> */}
       <GoogleOAuthProvider clientId="183947174251-v0876c90evn4mddbt5m3uo1qq9movr7l.apps.googleusercontent.com">
         <App />
       </GoogleOAuthProvider>
+    {/* </ReduxProvider> */}
     </DataProvider>
   </React.StrictMode>
 );

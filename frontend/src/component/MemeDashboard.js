@@ -55,7 +55,6 @@ const MemeDashboard = () => {
   };
   return (
     <Fragment>
-      <Header />
       <Stack height={"100%"} width="auto" maxHeight={"100vh"}>
         <Tabs
           value={value}
