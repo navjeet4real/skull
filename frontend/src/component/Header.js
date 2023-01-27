@@ -18,7 +18,7 @@ const Header = () => {
 
   useEffect(() => {
     getUser();
-  }, [getUser]);
+  }, []);
 
   async function getUser() {
     getDataAPI("user/refresh_token").then(function (token) {
@@ -54,7 +54,7 @@ const Header = () => {
       title: "About Us",
       icon: <Article />,
       onclick: () => {
-        navigate("/aboutUs");
+        navigate("/about");
       },
     },
     {

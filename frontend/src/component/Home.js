@@ -5,7 +5,6 @@ import MemeGenerator from "./MemeGenerator";
 const Home = () => {
   return (
     <Fragment>
-      <Header />
       <MemeGenerator />
     </Fragment>
   );
