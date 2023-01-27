@@ -28,7 +28,7 @@ const Meme = ({ item, downloadImg, index, value }) => {
           {
             value === 1 ?
               ""
-            :  <Typography variant="caption">{item.userId && `By -  ${item.userId.firstName}`} {item.userId && item.userId.lastName}</Typography>
+            :  <Typography variant="caption">{item.userId && `Creator -  ${item.userId.firstName}`} {item.userId && item.userId.lastName}</Typography>
           }
         </Stack>
       </Grid>

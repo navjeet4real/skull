@@ -47,7 +47,9 @@ const Header = () => {
       key: 0,
       title: "Profile",
       icon: <User />,
-      onclick: () => {},
+      onclick: () => {
+        navigate("/profile");
+      },
     },
     {
       key: 1,

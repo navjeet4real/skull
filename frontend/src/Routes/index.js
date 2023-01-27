@@ -29,6 +29,8 @@ export default function Router() {
         { path: "home", element: <HomePage /> },
         { path: "about", element: <AboutUsPage /> },
         { path: "dashboard", element: <DashboardPage /> },
+        { path: "profile", element: <ProfilePage /> },
+
 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
@@ -41,6 +43,8 @@ export default function Router() {
 const LoginPage = Loadable(lazy(() => import("../component/Login")));
 const HomePage = Loadable(lazy(() => import("../component/Home")));
 const AboutUsPage = Loadable(lazy(() => import("../component/AboutUs")));
+const ProfilePage = Loadable(lazy(() => import("../component/Profile")));
+
 const DashboardPage = Loadable(
   lazy(() => import("../component/MemeDashboard"))
 );
