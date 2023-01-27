@@ -11,33 +11,43 @@ import Header from "./Header";
 import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import Meme from "./Meme";
-import { useSelector } from "react-redux";
 
 const MemeDashboard = () => {
   const [memes, setMemes] = useState([]);
   const [memeByUserId, setMemeByUserId] = useState([]);
   const [user, setUser] = useState("");
-
   const [value, setValue] = React.useState(0);
-  const { auth } = useSelector((state) => state);
 
 
   useEffect(() => {
     getMeme();
-    setUser(auth.user)
     getMemeById(user)
-  }, []);
-
+    getUser();
+  }, [getUser]);
+  async function getUser() {
+    getDataAPI("user/refresh_token").then(function (token) {
+      if (token.data.access_token) {
+        console.log(token.data, "token and data")
+        getDataAPI(
+          `get_user/${token.data.user._id}`,
+          token.data.access_token
+        ).then((res) => {
+          setUser(res.data);
+        });
+      }
+    });
+  }
   function getMeme() {
     getDataAPI("meme/get-all-meme").then((res) => setMemes(res.data));
   }
   function getMemeById(user) {
     getDataAPI(`meme/get-meme/${user._id}`).then((res) => setMemeByUserId(res.data))
   }
+  console.log(memes,"memes")
   const downloadImg = useCallback((index) => {
     var node = document.getElementById(`meme-${index}`);
     htmlToImage.toPng(node).then(function (dataUrl) {
-      download(dataUrl, `meme-${index}.png`);
+      download(dataUrl, `meme-${index + 1}.png`);
     });
   }, []);
   const handleChange = (event, newValue) => {
@@ -84,12 +94,13 @@ const MemeDashboard = () => {
               case 1:
                 return (
                   <Grid container spacing={2}>
-                    {memes && memes.length > 0
-                      ? memes.map((item, index) => (
+                    {memeByUserId && memeByUserId.length > 0
+                      ? memeByUserId.map((item, index) => (
                           <Meme
                             item={item}
                             downloadImg={downloadImg}
                             index={index}
+                            value={value}
                           />
                         ))
                       : []}

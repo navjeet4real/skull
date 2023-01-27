@@ -11,40 +11,31 @@ import {
 } from "@mui/material";
 import { Article, SignOut, User } from "phosphor-react";
 import { getDataAPI, postDataAPI } from "../utils/API";
-import { useDispatch, useSelector } from "react-redux";
-import { dispatchGetUser1 } from "../redux/action/socialAction";
+
 const Header = () => {
- 
   const [user, setUser] = useState("");
   let navigate = useNavigate();
-  const { auth } = useSelector((state) => state.authReducer.user);
-  const dispatch = useDispatch();
-  dispatch(dispatchGetUser1())
 
-  // console.log(auth, "auth")
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
-  // useEffect(() => {
-  //   setUser(auth.user)
-  //   // getUser();
-  // },[])
-  console.log( "user")
+  async function getUser() {
+    getDataAPI("user/refresh_token").then(function (token) {
+      if (token.data.access_token) {
+        console.log(token.data, "token and data");
+        getDataAPI(
+          `get_user/${token.data.user._id}`,
+          token.data.access_token
+        ).then((res) => {
+          setUser(res.data);
+        });
+      }
+    });
+  }
 
-  // async function getUser() {
-  //   getDataAPI("user/refresh_token").then(function (token) {
-  //     if (token.data.access_token) {
-  //       console.log(token.data,"token and data")
-  //       getDataAPI(
-  //         `get_user/${token.data.user._id}`,
-  //         token.data.access_token
-  //       ).then((res) => {
-  //         setUser(res.data);
-  //       });
-  //     }
-  //   });
-  // }
   const logout = (user) => {
-    console.log("jjjjjjjjjjjjjjj",user)
-    postDataAPI("user/logout",{email:user.email}).then(function (res) {
+    postDataAPI("user/logout", { email: user.email }).then(function (res) {
       if (res.data.status === 1) {
         window.location.href = "/";
       }
@@ -63,18 +54,16 @@ const Header = () => {
       title: "About Us",
       icon: <Article />,
       onclick: () => {
-        navigate("/aboutUs")
+        navigate("/aboutUs");
       },
-
     },
     {
       key: 2,
       title: "Logout",
       icon: <SignOut />,
       onclick: () => {
-        logout(user)
+        logout(user);
       },
-
     },
   ];
   const [anchorEl, setAnchorEl] = useState();
@@ -85,7 +74,7 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <>
       <Box
@@ -168,27 +157,14 @@ const Header = () => {
             >
               <Stack spacing={1} px={1}>
                 {Profile_Menu.map(({ key, icon, title, onclick }) => (
-                  <MenuItem 
-                   key={key}
-                   onClick={onclick}
-                   
-                   >
+                  <MenuItem key={key} onClick={onclick}>
                     <Stack
                       sx={{ width: 100 }}
                       direction="row"
                       alignItems={"center"}
                       justifyContent="space-between"
                     >
-                      <span>
-                        {/* <Link
-                          component={RouterLink}
-                          to="/aboutUs"
-                          color={"inherit"}
-                          underline="none"
-                        > */}
-                          {title}
-                        {/* </Link> */}
-                      </span>
+                      <span>{title}</span>
                       {icon}
                     </Stack>
                   </MenuItem>

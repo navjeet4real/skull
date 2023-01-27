@@ -31,7 +31,7 @@ const MemeGenerator = () => {
 
   const { topText, bottomText } = text;
   useEffect(() => {
-    getAllMeme();
+    getAllMemeTemplate();
     getUser();
   }, []);
   async function getUser() {
@@ -47,7 +47,7 @@ const MemeGenerator = () => {
       }
     });
   }
-  function getAllMeme() {
+  function getAllMemeTemplate() {
     fetch("https://api.imgflip.com/get_memes")
       .then((response) => response.json())
       .then((response) => {

@@ -145,9 +145,11 @@ const userController = {
         response = await res.clearCookie("refreshtoken", {
           path: "/api/user/refresh_token",
         });
+
+        return res.json({ status: 1, msg: "logged out" });
       }
 
-      return res.json({ status: 1, msg: "logged out" });
+     
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
