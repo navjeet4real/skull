@@ -1,13 +1,11 @@
-import { Typography, Stack, Grid, IconButton, Tabs, Tab } from "@mui/material";
+import { Stack, Grid,  Tabs, Tab } from "@mui/material";
 import React, {
   Fragment,
   useEffect,
   useState,
-  useRef,
   useCallback,
 } from "react";
 import { getDataAPI } from "../utils/API";
-import Header from "./Header";
 import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import Meme from "./Meme";
@@ -23,7 +21,7 @@ const MemeDashboard = () => {
     getMeme();
     getUser();
     getMemeById(user)
-  }, [getUser]);
+  }, [user]);
   async function getUser() {
     getDataAPI("user/refresh_token").then(function (token) {
       if (token.data.access_token) {

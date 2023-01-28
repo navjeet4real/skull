@@ -8,7 +8,7 @@ const Profile = () => {
   useEffect(() => {
     getUser();
     getTotalMemeById(user)
-  }, [getUser]);
+  }, [user]);
 
   async function getUser() {
     getDataAPI("user/refresh_token").then(function (token) {
@@ -26,7 +26,6 @@ const Profile = () => {
   function getTotalMemeById(user) {
     getDataAPI(`meme/total-meme/${user._id}`).then((res) => setMemeCount(res.data))
   }
-  // console.log(memeCount, "ffffffffffffffffffff")
 
   let fullName = user.firstName + " " + user.lastName
   return (
