@@ -8,15 +8,15 @@ const memeController = {
         model: User,
       });
 
-      if(!memes){
+      if (!memes) {
         return res.json({
-            status: 0,
-            msg: "nothing existed"
+          status: 0,
+          msg: "nothing existed"
         })
       }
       return res.json(memes)
     } catch (error) {
-      return res.status(500).json({ msg: error.message, trace: error.stack });  
+      return res.status(500).json({ msg: error.message, trace: error.stack });
     }
   },
   // get meme by user ID
@@ -24,27 +24,36 @@ const memeController = {
     try {
 
       const id = req.params.id
-      const memes = await Meme.find({userId : id});
-      if(!memes){
+      const memes = await Meme.find({ userId: id });
+      if (!memes) {
         return res.json({
-            status: 0,
-            msg: "nothing existed"
+          status: 0,
+          msg: "nothing existed"
         })
       }
       return res.json(memes)
     } catch (error) {
-      return res.status(500).json({ msg: error.message, trace: error.stack });  
+      return res.status(500).json({ msg: error.message, trace: error.stack });
     }
   },
-
+  totalMemeById: async (req, res) => {
+    try {
+      const id = req.params.id
+      const memeCount = await Meme.find({ userId: id }).count();
+      
+      return res.json(memeCount)
+    } catch (error) {
+      return res.status(500).json({ msg: error.message, trace: error.stack });
+    }
+  },
   // post meme using user ID
   postMeme: async (req, res) => {
     try {
-      
-      const url = req.body.randomImg;   
-      const userId = req.body.id;   
+
+      const url = req.body.randomImg;
+      const userId = req.body.id;
       const { topText, bottomText } = req.body.text;
-    
+
       if (!url) {
         return res.json({ status: 0, errors });
       }
@@ -56,13 +65,13 @@ const memeController = {
           url: url,
         });
         await newMeme.save();
-        
+
         return res.json({
           memeId: newMeme._id,
           status: 1,
           msg: "Meme Posted",
         });
-      }else{
+      } else {
         return res.json({
           status: 0,
           msg: "Write Some text",

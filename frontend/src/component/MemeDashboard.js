@@ -21,8 +21,8 @@ const MemeDashboard = () => {
 
   useEffect(() => {
     getMeme();
-    getMemeById(user)
     getUser();
+    getMemeById(user)
   }, [getUser]);
   async function getUser() {
     getDataAPI("user/refresh_token").then(function (token) {
