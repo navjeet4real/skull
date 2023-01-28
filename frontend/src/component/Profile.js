@@ -1,20 +1,26 @@
-import { Avatar, Box, Button, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from "react";
+import { Avatar, Box, Button, Grid, Stack, Typography } from '@mui/material'
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from 'react-router-dom';
 import { getDataAPI } from '../utils/API';
+import Meme from "./Meme"
+import * as htmlToImage from "html-to-image";
+import download from "downloadjs";
 
 const Profile = () => {
   const [user, setUser] = useState("");
   const [creator, setCreator] = useState("");
   const [memeCount, setMemeCount] = useState(0);
+  const [creatorMemes, setCreatorMemes] = useState([]);
+
   let { id } = useParams();
   useEffect(() => {
-    getCreator(id);
+    getCreator()
     getTotalMemeById()
-    getUser();
+    getUser()
+    getCreatorMemes()
   }, [id]);
 
-  async function getCreator(id) {
+  async function getCreator() {
     getDataAPI(`get_user/${id}`).then((res) => {
       setCreator(res.data);
     });
@@ -35,15 +41,23 @@ const Profile = () => {
   function getTotalMemeById() {
     getDataAPI(`meme/total-meme/${id}`).then((res) => setMemeCount(res.data))
   }
-
+  function getCreatorMemes() {
+    getDataAPI(`meme/get-meme/${id}`).then((res) => setCreatorMemes(res.data))
+  }
   let fullName = creator.firstName + " " + creator.lastName
+
+  const downloadImg = useCallback((index) => {
+    var node = document.getElementById(`meme-${index}`);
+    htmlToImage.toPng(node).then(function (dataUrl) {
+      download(dataUrl, `meme-${index + 1}.png`);
+    });
+  }, []);
   return (
+  <>
     <Stack justifyContent="center" alignItems={'center'} mt={5}>
       <Box
         sx={{
-          height: "80vh",
           width: 520,
-
         }}>
         <Stack>
           <Stack justifyContent="center" alignItems="center" p={4} spacing={5} >
@@ -72,6 +86,22 @@ const Profile = () => {
         </Stack>
       </Box>
     </Stack>
+    <Stack p={3}>
+    <Typography variant='h4'>Creator Memes: </Typography>
+    <Grid container spacing={2} p={3} >
+      {creatorMemes && creatorMemes.length > 0
+        ? creatorMemes.map((item, index) => (
+          <Meme
+            item={item}
+            downloadImg={downloadImg}
+            index={index}
+            value={1}
+          />
+        ))
+        : []}
+    </Grid>
+  </Stack>
+    </>
   )
 }
 

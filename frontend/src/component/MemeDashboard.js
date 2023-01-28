@@ -41,7 +41,6 @@ const MemeDashboard = () => {
   function getMemeById(user) {
     getDataAPI(`meme/get-meme/${user._id}`).then((res) => setMemeByUserId(res.data))
   }
-  console.log(memes,"memes")
   const downloadImg = useCallback((index) => {
     var node = document.getElementById(`meme-${index}`);
     htmlToImage.toPng(node).then(function (dataUrl) {
