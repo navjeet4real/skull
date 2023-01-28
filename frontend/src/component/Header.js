@@ -15,7 +15,7 @@ import { getDataAPI, postDataAPI } from "../utils/API";
 const Header = () => {
   const [user, setUser] = useState("");
   let navigate = useNavigate();
-
+ 
   useEffect(() => {
     getUser();
   }, []);
@@ -41,14 +41,14 @@ const Header = () => {
       }
     });
   };
-
+  let userId = user._id
   const Profile_Menu = [
     {
       key: 0,
       title: "Profile",
       icon: <User />,
       onclick: () => {
-        navigate("/profile");
+        navigate(`/profile/${userId}`);
       },
     },
     {

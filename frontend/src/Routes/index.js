@@ -29,7 +29,7 @@ export default function Router() {
         { path: "home", element: <HomePage /> },
         { path: "about", element: <AboutUsPage /> },
         { path: "dashboard", element: <DashboardPage /> },
-        { path: "profile", element: <ProfilePage /> },
+        { path: "profile/:id", element: <ProfilePage /> },
 
 
         { path: "404", element: <Page404 /> },
