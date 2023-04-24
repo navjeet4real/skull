@@ -8,11 +8,7 @@ import Router from "./Routes";
 
 function App() {
   return (
-      <BrowserRouter>
-        <div>
           <Router />
-        </div>
-      </BrowserRouter>
   );
 }
 
