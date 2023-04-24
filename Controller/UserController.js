@@ -50,8 +50,8 @@ const userController = {
       if (!email_verified) {
         return res.status(400).json({ msg: "Email verification failed." });
       }
-      const user = await User.findOne({ email });
-      if (user) {
+      const userDoc = await User.findOne({ email });
+      if (userDoc) {
         // const isMatch = await bcrypt.compare(password, user.password);
         const token = signToken(userDoc._id);
 
@@ -60,7 +60,7 @@ const userController = {
           message: "Logged In.",
           token,
           email,
-          userId: userDoc._id,
+          user_id: userDoc._id,
         });
       }
       const newUser = await new User.create({
@@ -72,19 +72,17 @@ const userController = {
         verified: email_verified,
       });
 
-       newUser.save();
-
-       const token = signToken(newUser._id);
-      console.log(token, "kkkkkkkk")
-       return res.json({
-         status: "Success",
-         message: "Logged In.",
-         token,
-         email,
-         user_id: newUser._id,
-       });
-
-     
+      newUser.save();
+      console.log(newUser, "newUser")
+      const token = signToken(newUser._id);
+      console.log(token, "kkkkkkkk");
+      return res.json({
+        status: "Success",
+        message: "Logged In.",
+        token,
+        email,
+        user_id: newUser._id,
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

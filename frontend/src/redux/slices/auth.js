@@ -1,16 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-
+import { ShowSnackBar } from "./app";
 
 const initialState = {
-  auth: {
-    isLogged: false,
-    user: "",
-    token: "",
-    email: "",
-    user_id: "",
-    error: false,
-  },
+  isLoggedIn: false,
+  user: "",
+  token: "",
+  email: "",
+  user_id: "",
+  error: false,
 };
 
 const slice = createSlice({
@@ -23,7 +21,6 @@ const slice = createSlice({
       state.email = action.payload.email;
       state.user_id = action.payload.user_id;
       state.role = action.payload.role;
-      state.business_id = action.payload.business_id;
     },
     signOut(state, action) {
       state.isLoggedIn = false;
@@ -35,7 +32,6 @@ const slice = createSlice({
     fetchUser(state, action) {
       console.log(action.payload);
       state.user = action.payload.user;
-      state.business_id = action.payload.user.business_id;
     },
   },
 });
@@ -62,15 +58,14 @@ export function getUser() {
   };
 }
 
-
 export function GoogleLoginUser(formValues) {
-  console.log('hello', formValues)
+  console.log("hello", formValues);
   return async (dispatch, getState) => {
     // dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
 
     try {
       const response = await axios.post(`/auth/google-login`, formValues);
-      console.log(response)
+      console.log(response, "redux google login response ");
       dispatch(
         slice.actions.logIn({
           isLoggedIn: true,
@@ -81,13 +76,13 @@ export function GoogleLoginUser(formValues) {
       );
 
       window.localStorage.setItem("user_id", response.data.user_id);
-      // dispatch(
-      //   ShowSnackBar({ severity: "success", message: response.data.message })
-      // );
+      dispatch(
+        ShowSnackBar({ severity: "success", message: response.data.message })
+      );
     } catch (error) {
       console.log(error);
 
-      // dispatch(ShowSnackBar({ severity: "error", message: error.message }));
+      dispatch(ShowSnackBar({ severity: "error", message: error.message }));
       // dispatch(
       //   slice.actions.updateIsLoading({ isLoading: false, error: true })
       // );
@@ -104,10 +99,8 @@ export function LogoutUser() {
     window.localStorage.removeItem("user_id");
     // Cookies.remove('session');
     dispatch(slice.actions.signOut());
-    dispatch(
-      // ShowSnackBar({ severity: "success", message: "Logged out successfully!" })
-    )
-    .finally(() => {
+    dispatch().finally(() => {
+    // ShowSnackBar({ severity: "success", message: "Logged out successfully!" })
       if (!getState().auth.error) {
         window.location.href = "/auth/login";
       }
