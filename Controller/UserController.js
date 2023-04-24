@@ -2,22 +2,34 @@ const User = require("../Models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const getAuthTokens = (id) => {
-  const accesstoken = createAccessToken({ id });
-  const refresh_token = createRefreshToken({ id });
-  return { accesstoken, refresh_token };
-};
+// jwt token
+const signToken = (userId) => jwt.sign({ userId }, process.env.SECRET_KEY);
+// jwt token end
 
 const userController = {
   // get user details by id
+  // getUser: async (req, res) => {
+  //   try {
+  //     const user = await User.findById(req.params.id);
+
+  //     if (!user) {
+  //       return res.status(400).json("user does not exist");
+  //     }
+  //     res.json(user);
+  //   } catch (err) {
+  //     return res.status(500).json({ msg: err.message });
+  //   }
+  // },
+  // get user details by id
   getUser: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id);
-
-      if (!user) {
+      const { user } = req;
+      let userId = user._id;
+      const userDoc = await User.findById(userId);
+      if (!userDoc) {
         return res.status(400).json("user does not exist");
       }
-      res.json(user);
+      res.json(userDoc);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -41,53 +53,96 @@ const userController = {
       const user = await User.findOne({ email });
       if (user) {
         // const isMatch = await bcrypt.compare(password, user.password);
-        const refresh_token = createRefreshToken({ id: user._id });
-        const responseBody = {
-          token: refresh_token,
-          accessToken: access_token,
-          status: 1,
-        };
-        res.cookie("refreshtoken", refresh_token, {
-          httpOnly: true,
-          path: "/api/user/refresh_token",
-          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
+        const token = signToken(userDoc._id);
+
         return res.json({
-          ...responseBody,
-          user: { ...user._doc, password: " " },
-          msg: "Login success!",
+          status: "Success",
+          message: "Logged In.",
+          token,
+          email,
+          userId: userDoc._id,
         });
       }
-      const newUser = new User({
+      const newUser = await new User.create({
         firstName: given_name,
         lastName: family_name,
-        email,
+        email: email,
         password: passwordHash,
         picture: picture,
         verified: email_verified,
       });
 
-      const userDoc = await newUser.save();
+       newUser.save();
 
-      const { accesstoken: accessToken, refresh_token } = getAuthTokens(
-        userDoc._id
+       const token = signToken(newUser._id);
+      console.log(token, "kkkkkkkk")
+       return res.json({
+         status: "Success",
+         message: "Logged In.",
+         token,
+         email,
+         user_id: newUser._id,
+       });
+
+     
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  //protect middleware
+  protect: async (req, res, next) => {
+    try {
+      // 1)  getting token (jwt) and check if it's available
+      // console.log("enter ----protect---------");
+      let token;
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer")
+      ) {
+        token = req.headers.authorization.split(" ")[1];
+      } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+      }
+
+      if (!token) {
+        return res.status(401).json({
+          status: "error",
+          message: "You are not logged In! Please log in to get access.",
+        });
+      }
+      // console.log(token, "token -------------");
+
+      // 2) verification of token
+
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.SECRET_KEY
       );
-      const responseBody = {
-        token: refresh_token,
-        accessToken: access_token,
-        status: 1,
-      };
-      res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        path: "/api/user/refresh_token",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      });
+      // console.log(decoded, "decoded --------------");
+      // 3) check if user still exist
 
-      return res.json({
-        ...responseBody,
-        user: { ...userDoc._doc, password: " " },
-        msg: "Login success!",
-      });
+      const this_user = await User.findById(decoded.userId);
+
+      if (!this_user) {
+        return res.status(400).json({
+          status: "error",
+          message: "The user belonging to this token does not exist.",
+        });
+      }
+
+      // 4) check if user cahnged their password after token is issued
+
+      // if (this_user.chanedPasswordAfter(decoded.iat)) {
+      //  return res.status(400).json({
+      //     status: "error",
+      //     message: "user recently updated password. Please log in again.",
+      //   });
+      // }
+      // console.log(this_user, "this_user -------------");
+
+      req.user = this_user;
+      next();
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -148,17 +203,10 @@ const userController = {
 
         return res.json({ status: 1, msg: "logged out" });
       }
-
-     
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
 };
-const createAccessToken = (user) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
-};
-const createRefreshToken = (user) => {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "3d" });
-};
+
 module.exports = userController;

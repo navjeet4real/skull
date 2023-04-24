@@ -1,6 +1,7 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from "axios";
-
+import { useDispatch } from 'react-redux';
+import { GoogleLoginUser } from '../redux/slices/auth';
 
 
 const getUserInfo = async (access_token) => {
@@ -14,16 +15,18 @@ const getUserInfo = async (access_token) => {
 
 
 export const useGoogleOAuth = ({ onSuccess, onError }) => {
+    const dispatch = useDispatch()
     return useGoogleLogin({
         onSuccess: async credentials => {
-            
+            console.log(credentials, "credentials")
             const { access_token } = credentials;
             const user = await getUserInfo(access_token);
             const payload = { ...user, access_token };
-            const res = await axios.post('/api/google_login', payload)
+            // const res = await axios.post('/api/google_login', payload)
             
             if (onSuccess !== undefined) {
-                onSuccess(res)
+                onSuccess(payload)
+                dispatch(GoogleLoginUser(payload))
             }
         },
         onError,
