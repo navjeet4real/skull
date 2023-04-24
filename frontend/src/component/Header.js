@@ -11,36 +11,15 @@ import {
 } from "@mui/material";
 import { Article, SignOut, User } from "phosphor-react";
 import { getDataAPI, postDataAPI } from "../utils/API";
+import { LogoutUser } from "../redux/slices/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
-  const [user, setUser] = useState("");
+  // const [user, setUser] = useState("");
+  const {user} = useSelector((state) => state.auth)
   let navigate = useNavigate();
+  const dispatch = useDispatch()
  
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        console.log(token.data, "token and data");
-        getDataAPI(
-          `get_user/${token.data.user._id}`,
-          token.data.access_token
-        ).then((res) => {
-          setUser(res.data);
-        });
-      }
-    });
-  }
-
-  const logout = (user) => {
-    postDataAPI("user/logout", { email: user.email }).then(function (res) {
-      if (res.data.status === 1) {
-        window.location.href = "/auth/login";
-      }
-    });
-  };
   let userId = user._id
   const Profile_Menu = [
     {
@@ -48,7 +27,7 @@ const Header = () => {
       title: "Profile",
       icon: <User />,
       onclick: () => {
-        navigate(`/profile/${userId}`);
+        navigate(`/profile`);
       },
     },
     {
@@ -64,7 +43,7 @@ const Header = () => {
       title: "Logout",
       icon: <SignOut />,
       onclick: () => {
-        logout(user);
+        dispatch(LogoutUser(user));;
       },
     },
   ];

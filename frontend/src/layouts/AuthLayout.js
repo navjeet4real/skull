@@ -1,24 +1,17 @@
+import React from "react";
 import { Stack } from "@mui/material";
-import React, {useEffect} from "react";
-
-import {
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
-import { getDataAPI } from "../utils/API";
+import { Navigate, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../redux/slices/auth";
 
 const AuthLayout = () => {
-  let navigate = useNavigate();
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        navigate("/home");
-      }
-    });
+  console.log(isLoggedIn, "kkkkkkkkkkkkkkk");
+  if (isLoggedIn) {
+    dispatch(getUser());
+    return <Navigate to="/home" />;
   }
   return (
     <>

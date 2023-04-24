@@ -1,6 +1,7 @@
 const User = require("../Models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 // jwt token
 const signToken = (userId) => jwt.sign({ userId }, process.env.SECRET_KEY);
@@ -188,23 +189,7 @@ const userController = {
       return res.status(500).json({ msg: err.message });
     }
   },
-  // delete refreshtoken for logout
-  logout: async (req, res) => {
-    try {
-      const { email } = req.body;
-      const user = await User.findOneAndUpdate({ email: email });
-      let response;
-      if (user) {
-        response = await res.clearCookie("refreshtoken", {
-          path: "/api/user/refresh_token",
-        });
 
-        return res.json({ status: 1, msg: "logged out" });
-      }
-    } catch (err) {
-      return res.status(500).json({ msg: err.message });
-    }
-  },
 };
 
 module.exports = userController;

@@ -30,7 +30,7 @@ const slice = createSlice({
       state.user = "";
     },
     fetchUser(state, action) {
-      console.log(action.payload);
+      console.log(action.payload, "fetch user");
       state.user = action.payload.user;
     },
   },
@@ -100,7 +100,7 @@ export function LogoutUser() {
     // Cookies.remove('session');
     dispatch(slice.actions.signOut());
     dispatch().finally(() => {
-    // ShowSnackBar({ severity: "success", message: "Logged out successfully!" })
+    ShowSnackBar({ severity: "success", message: "Logged out successfully!" })
       if (!getState().auth.error) {
         window.location.href = "/auth/login";
       }
