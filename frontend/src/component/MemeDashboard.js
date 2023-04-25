@@ -1,46 +1,34 @@
-import { Stack, Grid,  Tabs, Tab } from "@mui/material";
-import React, {
-  Fragment,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import { Stack, Grid, Tabs, Tab } from "@mui/material";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { getDataAPI } from "../utils/API";
 import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import Meme from "./Meme";
+import { useDispatch, useSelector } from "react-redux";
+import { GetMemes, GetMemesByUserId } from "../redux/slices/app";
 
 const MemeDashboard = () => {
-  const [memes, setMemes] = useState([]);
-  const [memeByUserId, setMemeByUserId] = useState([]);
-  const [user, setUser] = useState("");
+  // const [memes, setMemes] = useState([]);
+  // const [memeByUserId, setMemeByUserId] = useState([]);
+  // const [user, setUser] = useState("");
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
 
+  const { user } = useSelector((state) => state.auth);
+  const { memeByUserId, memes } = useSelector((state) => state.app);
 
-  useEffect(() => {
-    getMeme();
-    getUser();
-    getMemeById(user)
-  }, [user]);
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        console.log(token.data, "token and data")
-        getDataAPI(
-          `get_user/${token.data.user._id}`,
-          token.data.access_token
-        ).then((res) => {
-          setUser(res.data);
-        });
-      }
-    });
-  }
-  function getMeme() {
-    getDataAPI("meme/get-all-meme").then((res) => setMemes(res.data));
-  }
-  function getMemeById(user) {
-    getDataAPI(`meme/get-meme/${user._id}`).then((res) => setMemeByUserId(res.data))
-  }
+  // useEffect(() => {
+  //   dispatch(GetMemes());
+
+  //   getMemeById(user)
+  // }, [user]);
+
+  // function getMeme() {
+  //   getDataAPI("meme/get-all-meme").then((res) => setMemes(res.data));
+  // }
+  // function getMemeById(user) {
+  //   getDataAPI(`meme/get-meme/${user._id}`).then((res) => setMemeByUserId(res.data))
+  // }
   const downloadImg = useCallback((index) => {
     var node = document.getElementById(`meme-${index}`);
     htmlToImage.toPng(node).then(function (dataUrl) {
@@ -59,8 +47,18 @@ const MemeDashboard = () => {
           centered
           sx={{ px: 2, pt: 2 }}
         >
-          <Tab label="All Memes" />
-          <Tab label="Mine" />
+          <Tab
+            label="All Memes"
+            onClick={() => {
+              dispatch(GetMemes());
+            }}
+          />
+          <Tab
+            label="Mine"
+            onClick={() => {
+              dispatch(GetMemesByUserId(user._id));
+            }}
+          />
         </Tabs>
         <Stack
           sx={{

@@ -3,10 +3,12 @@ const User = require("../Models/UserModel")
 const memeController = {
   getAllMeme: async (req, res) => {
     try {
+      console.log("hhhhhhhhhhhhhhhhhhhh")
       const memes = await Meme.find().populate({
         path: "userId",
         model: User,
       });
+      console.log(memes, "mmmmmmmmmmmmmmmmmmmm getAllMeme" )
 
       if (!memes) {
         return res.json({
@@ -22,9 +24,11 @@ const memeController = {
   // get meme by user ID
   getMemeById: async (req, res) => {
     try {
+      console.log("hhhhhhhhhhhhhhhhhhhh", req.params.id)
 
       const id = req.params.id
       const memes = await Meme.find({ userId: id });
+      console.log(memes, "mmmmmmmmmmmmmmmmmmmm")
       if (!memes) {
         return res.json({
           status: 0,
