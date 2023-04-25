@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { postDataAPI, getDataAPI } from "../utils/API";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllTemplates } from "../redux/slices/app";
 
 const initialState = { topText: "", bottomText: "" };
 const CssTextField = styled(TextField)({
@@ -20,54 +22,40 @@ const CssTextField = styled(TextField)({
 });
 
 const MemeGenerator = () => {
-  const [allMeme, setAllMeme] = useState([]);
   const [text, setText] = useState(initialState);
-  const [user, setUser] = useState("");
 
-  let navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  let navigate = useNavigate();
   const [randomImg, setRandomImg] = useState(
     "https://i.imgflip.com/46e43q.png"
-  );
+    );
+    
+    const { topText, bottomText } = text;
+    useEffect(() => {
+      dispatch(GetAllTemplates());
+    }, []);
+    
+    const { memeTemplates } = useSelector((state) => state.app);
 
-  const { topText, bottomText } = text;
-  useEffect(() => {
-    getAllMemeTemplate();
-    getUser();
-  }, []);
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        console.log(token.data, "token and data")
-        getDataAPI(
-          `get_user/${token.data.user._id}`,
-          token.data.access_token
-        ).then((res) => {
-          setUser(res.data);
-        });
-      }
-    });
-  }
-  function getAllMemeTemplate() {
-    fetch("https://api.imgflip.com/get_memes")
-      .then((response) => response.json())
-      .then((response) => {
-        setAllMeme(response.data.memes);
-      });
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setText((text) => ({ ...text, [name]: value }));
   };
   const changeMeme = () => {
-    const randNum = Math.floor(Math.random() * allMeme.length);
-    const randMemeImg = allMeme[randNum].url;
+    const randNum = Math.floor(Math.random() * memeTemplates.length);
+    const randMemeImg = memeTemplates[randNum].url;
     setRandomImg(randMemeImg);
   };
   const handleSubmit = async () => {
-    const res = await postDataAPI("meme/post-meme", { text, randomImg, id: user._id });
+    const res = await postDataAPI("meme/post-meme", {
+      text,
+      randomImg,
+      id: user._id,
+    });
     if (res.data.status === 1) {
-      navigate('/dashboard')
+      navigate("/dashboard");
     }
   };
   return (
@@ -84,7 +72,6 @@ const MemeGenerator = () => {
           justifyContent="space-evenly"
           alignItems={"center"}
           sx={{ width: "100%", height: "100%", mt: 5, mb: 5 }}
-
         >
           <Box
             component="form"

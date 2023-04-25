@@ -92,3 +92,14 @@ export function GetMemesByUserId(id) {
       });
   };
 }
+
+export function GetAllTemplates ( ) {
+  return async (dispatch, getState) => {
+    await axios.get("https://api.imgflip.com/get_memes").then( function (response) {
+      console.log(response, "gggggggggggggg")
+      dispatch(slice.actions.fetchMemeTemplates({memeTemplates : response.data.data.memes}))
+    }).catch(function (error) {
+      console.log(error, "get all meme templates error")
+    })
+  }
+}
