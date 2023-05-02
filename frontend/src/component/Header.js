@@ -10,12 +10,10 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Article, SignOut, User } from "phosphor-react";
-import { getDataAPI, postDataAPI } from "../utils/API";
 import { LogoutUser } from "../redux/slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
-  // const [user, setUser] = useState("");
   const {user} = useSelector((state) => state.auth)
   let navigate = useNavigate();
   const dispatch = useDispatch()

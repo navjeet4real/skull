@@ -1,6 +1,5 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { postDataAPI, getDataAPI } from "../utils/API";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +22,15 @@ const CssTextField = styled(TextField)({
 
 const MemeGenerator = () => {
   const [text, setText] = useState(initialState);
-
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  let navigate = useNavigate();
   const [randomImg, setRandomImg] = useState(
     "https://i.imgflip.com/46e43q.png"
   );
 
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  
   const { topText, bottomText } = text;
+
   useEffect(() => {
     dispatch(GetAllTemplates());
   }, []);
@@ -42,20 +41,14 @@ const MemeGenerator = () => {
     const { name, value } = e.target;
     setText((text) => ({ ...text, [name]: value }));
   };
+  
   const changeMeme = () => {
     const randNum = Math.floor(Math.random() * memeTemplates.length);
     const randMemeImg = memeTemplates[randNum].url;
     setRandomImg(randMemeImg);
   };
+
   const handleSubmit = async () => {
-    // const res = await postDataAPI("meme/post-meme", {
-    //   text,
-    //   randomImg,
-    //   id: user._id,
-    // });
-    // if (res.data.status === 1) {
-    //   navigate("/dashboard");
-    // }
     dispatch(
       PostMeme({
         text,

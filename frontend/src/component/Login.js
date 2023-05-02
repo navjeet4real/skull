@@ -3,34 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { GoogleLogo } from "phosphor-react";
 import useGoogleOAuth from "../hooks/useGoogleOAuth";
-// import { dispatchLogin } from "../redux/action/socialAction";
 import { useDispatch, useSelector } from "react-redux";
 
 
 
 const Login = () => {
   const [user, setUser] = useState();
-  let navigate = useNavigate();
-  const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
   console.log(auth, "auth")
-  // if (auth && auth.data) {
-  //   var response = auth.data;
-  //   console.log(response,"response")
-  //   if (response.errors === undefined) {
-  //     response.errors = 0;
-  //   }
-  //   if (response.status === 1) {
-  //     navigate("/dashboard")
-  //   }
-  // }
+
   const googleLogin = useGoogleOAuth({
     onSuccess: async (res) => {
       setUser({ ...user, error: "" });
       localStorage.setItem("firstLogin", true);
-      // console.log(res.data, "ddddddddddddd",user)
-      // dispatch(dispatchLogin(res.data));
-      // navigate("/dashboard");
     },
     onError: () => {
       console.log("google: Login Failed");

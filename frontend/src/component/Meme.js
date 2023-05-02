@@ -18,24 +18,33 @@ const Meme = ({ item, downloadImg, index, value }) => {
           <Typography className="topText">{item.topText}</Typography>
           <Typography className="bottomText">{item.bottomText}</Typography>
         </Stack>
-        <Stack direction={'row'} justifyContent="space-between" alignItems={'center'}>
+        <Stack
+          direction={"row"}
+          justifyContent="space-between"
+          alignItems={"center"}
+        >
           <IconButton
             onClick={() => {
               downloadImg(index);
             }}
           >
             <Download />
-          </IconButton >
-
-          {
-            value === 1 ?
-              ""
-            :  <>
-            <IconButton to={`/profile/${item.userId && item.userId._id}`} component={RouterLink}>
-            <Typography variant="caption">{item.userId && `Creator -  ${item.userId.firstName}`} {item.userId && item.userId.lastName}</Typography>
-            </IconButton>
+          </IconButton>
+          {value === 1 ? (
+            ""
+          ) : (
+            <>
+              <IconButton
+                to={`/profile/${item.userId && item.userId._id}`}
+                component={RouterLink}
+              >
+                <Typography variant="caption">
+                  {item.userId && `Creator -  ${item.userId.firstName}`}{" "}
+                  {item.userId && item.userId.lastName}
+                </Typography>
+              </IconButton>
             </>
-          }
+          )}
         </Stack>
       </Grid>
     </>
