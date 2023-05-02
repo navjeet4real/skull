@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-// import { updateIsLoading } from "../slices/auth";
 
 const initialState = {
   snackbar: {
@@ -32,9 +31,9 @@ const slice = createSlice({
     fetchMemesByUSerId(state, action) {
       state.memeByUserId = action.payload.memeByUserId;
     },
-    fetchMemeTemplates(state, action){
-      state.memeTemplates = action.payload.memeTemplates
-    }
+    fetchMemeTemplates(state, action) {
+      state.memeTemplates = action.payload.memeTemplates;
+    },
   },
 });
 
@@ -70,8 +69,8 @@ export function GetMemes() {
         console.log(response, "response getMemes");
         dispatch(slice.actions.fetchMemes({ memes: response.data }));
       })
-      .catch(function (err) {
-        console.log(err);
+      .catch(function (error) {
+        dispatch(ShowSnackBar({ severity: "error", message: error.message }));
       });
   };
 }
@@ -85,21 +84,60 @@ export function GetMemesByUserId(id) {
       })
       .then(function (response) {
         console.log(response, "response getMemes");
-        dispatch(slice.actions.fetchMemesByUSerId({ memeByUserId: response.data }));
+        dispatch(
+          slice.actions.fetchMemesByUSerId({ memeByUserId: response.data })
+        );
       })
-      .catch(function (err) {
-        console.log(err);
+      .catch(function (error) {
+        dispatch(ShowSnackBar({ severity: "error", message: error.message }));
       });
   };
 }
 
-export function GetAllTemplates ( ) {
+export function GetAllTemplates() {
   return async (dispatch, getState) => {
-    await axios.get("https://api.imgflip.com/get_memes").then( function (response) {
-      console.log(response, "gggggggggggggg")
-      dispatch(slice.actions.fetchMemeTemplates({memeTemplates : response.data.data.memes}))
-    }).catch(function (error) {
-      console.log(error, "get all meme templates error")
-    })
-  }
+    await axios
+      .get("https://api.imgflip.com/get_memes")
+      .then(function (response) {
+        dispatch(
+          slice.actions.fetchMemeTemplates({
+            memeTemplates: response.data.data.memes,
+          })
+        );
+      })
+      .catch(function (error) {
+        dispatch(ShowSnackBar({ severity: "error", message: error.message }));
+      });
+  };
+}
+
+export function PostMeme(data) {
+  return async (dispatch, getState) => {
+    await axios
+      .post(
+        "meme/post-meme",
+        {
+          ...data,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        dispatch(
+          slice.actions.openSnackBar({
+            severity: "success",
+            message: response.data.message,
+          })
+        );
+      })
+      .catch(function (error) {
+        dispatch(ShowSnackBar({ severity: "error", message: error.message }));
+      })
+      .finally(() => {
+        window.location.href = "/dashboard"
+      })
+  };
 }

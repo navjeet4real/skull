@@ -52,8 +52,8 @@ export function getUser() {
         console.log(response);
         dispatch(slice.actions.fetchUser({ user: response.data }));
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        dispatch(ShowSnackBar({ severity: "error", message: error.message }));
       });
   };
 }
@@ -61,8 +61,6 @@ export function getUser() {
 export function GoogleLoginUser(formValues) {
   console.log("hello", formValues);
   return async (dispatch, getState) => {
-    // dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
-
     try {
       const response = await axios.post(`/auth/google-login`, formValues);
       console.log(response, "redux google login response ");
@@ -74,23 +72,13 @@ export function GoogleLoginUser(formValues) {
           user_id: response.data.user_id,
         })
       );
-
       window.localStorage.setItem("user_id", response.data.user_id);
       dispatch(
         ShowSnackBar({ severity: "success", message: response.data.message })
       );
     } catch (error) {
-      console.log(error);
-
       dispatch(ShowSnackBar({ severity: "error", message: error.message }));
-      // dispatch(
-      //   slice.actions.updateIsLoading({ isLoading: false, error: true })
-      // );
-      return;
     }
-
-    // dispatch(slice.actions.updateIsLoading({ isLoading: false, error: false }));
-    // window.location.href = "/auth/complete-profile";
   };
 }
 
