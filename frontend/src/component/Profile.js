@@ -1,50 +1,37 @@
 import { Avatar, Box, Button, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from 'react-router-dom';
-import { getDataAPI } from '../utils/API';
 import Meme from "./Meme"
 import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
-  const [user, setUser] = useState("");
-  const [creator, setCreator] = useState("");
   const [memeCount, setMemeCount] = useState(0);
-  const [creatorMemes, setCreatorMemes] = useState([]);
+  // const [creatorMemes, setCreatorMemes] = useState([]);
+  const {user} = useSelector((state) => state.auth)
 
   let { id } = useParams();
   useEffect(() => {
-    getCreator()
-    getTotalMemeById()
-    getUser()
-    getCreatorMemes()
+    // getCreator()
+    // getTotalMemeById()
+    // getUser()
+    // getCreatorMemes()
   }, [id]);
 
-  async function getCreator() {
-    getDataAPI(`get_user/${id}`).then((res) => {
-      setCreator(res.data);
-    });
-  }
-  async function getUser() {
-    getDataAPI("user/refresh_token").then(function (token) {
-      if (token.data.access_token) {
-        console.log(token.data, "token and data");
-        getDataAPI(
-          `get_user/${token.data.user._id}`,
-          token.data.access_token
-        ).then((res) => {
-          setUser(res.data);
-        });
-      }
-    });
-  }
-  function getTotalMemeById() {
-    getDataAPI(`meme/total-meme/${id}`).then((res) => setMemeCount(res.data))
-  }
-  function getCreatorMemes() {
-    getDataAPI(`meme/get-meme/${id}`).then((res) => setCreatorMemes(res.data))
-  }
-  let fullName = creator.firstName + " " + creator.lastName
+  // async function getCreator() {
+  //   getDataAPI(`get_user/${id}`).then((res) => {
+  //     setCreator(res.data);
+  //   });
+  // }
+ 
+  // function getTotalMemeById() {
+  //   getDataAPI(`meme/total-meme/${id}`).then((res) => setMemeCount(res.data))
+  // }
+  // function getCreatorMemes() {
+  //   getDataAPI(`meme/get-meme/${id}`).then((res) => setCreatorMemes(res.data))
+  // }
+  // let fullName = creator.firstName + " " + creator.lastName
 
   const downloadImg = useCallback((index) => {
     var node = document.getElementById(`meme-${index}`);
@@ -61,27 +48,31 @@ const Profile = () => {
         }}>
         <Stack>
           <Stack justifyContent="center" alignItems="center" p={4} spacing={5} >
-            <Avatar sx={{ width: 145, height: 145 }} src={creator.picture} />
-            <Typography variant='h5'>{fullName}</Typography>
+            {/* <Avatar sx={{ width: 145, height: 145 }} src={creator.picture} /> */}
+            {/* <Typography variant='h5'>{fullName}</Typography> */}
           </Stack>
           <Stack p={4} spacing={5} >
             <Stack direction={'row'} justifyContent="space-between">
               <Typography>Email: </Typography>
-              <Typography>{creator.email}</Typography>
+              <Typography>
+                {/* {creator.email} */}
+                </Typography>
             </Stack>
             <Stack direction={'row'} justifyContent="space-between">
               <Typography>Total Meme: </Typography>
-              <Typography>{memeCount}</Typography>
+              <Typography>
+                {/* {memeCount} */}
+                </Typography>
             </Stack>
           </Stack>
         </Stack>
         <Stack justifyContent={'end'} alignItems='center'>
-          {
+          {/* {
             user._id && creator._id && <>
               <Button variant="contained"
                 sx={{ backgroundColor: "#333" }}>Edit</Button>
             </>
-          }
+          } */}
 
         </Stack>
       </Box>
@@ -89,7 +80,7 @@ const Profile = () => {
     <Stack p={3}>
     <Typography variant='h4'>Creator Memes: </Typography>
     <Grid container spacing={2} p={3} >
-      {creatorMemes && creatorMemes.length > 0
+      {/* {creatorMemes && creatorMemes.length > 0
         ? creatorMemes.map((item, index) => (
           <Meme
             item={item}
@@ -98,7 +89,7 @@ const Profile = () => {
             value={1}
           />
         ))
-        : []}
+        : []} */}
     </Grid>
   </Stack>
     </>
