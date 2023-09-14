@@ -57,5 +57,5 @@
   "devDependencies": {
     "@faker-js/faker": "^7.5.0"
   },
-  "proxy": "http://localhost:8000/"
+  "proxy": "https://skull-meme-generator.onrender.com/"
 }
