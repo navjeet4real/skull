@@ -9,8 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const [user, setUser] = useState();
-  const { auth } = useSelector((state) => state);
-  console.log(auth, "auth")
+  // const { auth } = useSelector((state) => state);
+  // console.log(auth, "auth")
 
   const googleLogin = useGoogleOAuth({
     onSuccess: async (res) => {

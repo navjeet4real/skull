@@ -47,6 +47,8 @@ const userController = {
         picture,
       } = req.body;
       const password = email + process.env.GOOGLE_CLIENT_SECRET;
+
+      console.log(password, "vvvvvvvvvvvvvvvvvvvvvvvvvvv")
       const passwordHash = await bcrypt.hash(password, 10);
       if (!email_verified) {
         return res.status(400).json({ msg: "Email verification failed." });

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const {user} = useSelector((state) => state.auth)
+  console.log(user, "nnnnnnnnnnnnnnnnnnnnnnnnnn")
   let navigate = useNavigate();
   const dispatch = useDispatch()
  

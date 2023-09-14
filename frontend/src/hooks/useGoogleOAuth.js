@@ -22,6 +22,7 @@ export const useGoogleOAuth = ({ onSuccess, onError }) => {
             console.log(credentials, "credentials")
             const { access_token } = credentials;
             const user = await getUserInfo(access_token);
+            console.log(user, "user")
             const payload = { ...user, access_token };
             // const res = await axios.post('/api/google_login', payload)
             
