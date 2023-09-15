@@ -1,19 +1,22 @@
 import { Stack } from "@mui/material";
 import React, {useEffect} from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Header from "../component/Header";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../redux/slices/auth";
 
-const isAuthenticated = true;
-
 const DashboardLayout = () => {
-  
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch()
-  // let navigate = useNavigate();
   useEffect(() => {
     dispatch(getUser())
   }, []);
+
+  if (!isLoggedIn) {
+    dispatch(getUser());
+    return <Navigate to="/auth/login" />;
+  }
 
   return (
     <>
